@@ -1,14 +1,54 @@
-# 1. Create workspace
+# TanStack Start + Express Monorepo Setup
+
+## 1. Create Nx workspace
+
+# Run this from the parent directory where you want your new monorepo
+
+# This creates a new directory with the name you specify (e.g., "my-monorepo")
+
 npx create-nx-workspace@latest my-monorepo --preset=empty
 
-# 2. Install all plugins upfront
-npm install --save-dev @nx/node @nx/express @nx/react @nx/vite
+# Then navigate into the new workspace
 
-# 3. Generate API properly
+cd my-monorepo
+
+## 2. Install required Nx plugins
+
+npm install --save-dev @nx/node @nx/express
+
+## 3. Generate Express API
+
 npx nx g @nx/express:app api --directory=apps/api
 
-# 4. Generate React frontend with Vite
-npx nx g @nx/react:app frontend --directory=apps/frontend --bundler=vite
+## 4. Create TanStack Start frontend
 
-# 5. Add TanStack packages if needed
-cd apps/frontend && npm install @tanstack/react-router @tanstack/react-query
+cd apps
+npx create-tanstack-start@latest frontend
+
+## 5. Integrate TanStack Start with Nx
+
+# Create apps/frontend/project.json for Nx task management
+
+# Add build, serve, and lint targets that delegate to TanStack Start commands
+
+## 6. Configure workspace dependencies
+
+# Update root package.json to include frontend workspace
+
+# Configure shared TypeScript configs and interfaces between apps
+
+## 7. Optional: Add shared libraries
+
+# npx nx g @nx/js:lib shared --directory=libs/shared
+
+# Move common interfaces and utilities to shared lib
+
+## Benefits of this approach:
+
+# - TanStack Start provides full-stack React with file-based routing
+
+# - Express API handles backend logic and database operations
+
+# - Nx manages the monorepo and task orchestration
+
+# - Shared code between frontend and backend through libs
