@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import type { Car } from './car.interface';
+import ChatBot from './ChatBot';
 
 function Home() {
   const [cars, setCars] = useState<Car[]>([]);
+  const [isChatBotOpen, setIsChatBotOpen] = useState(false);
 
   useEffect(() => {
     fetch('http://localhost:3333/api/cars')
@@ -56,17 +58,56 @@ function Home() {
           margin: '0 auto',
         }}
       >
-        <h1
+        <div
           style={{
-            fontSize: '2.5rem',
-            fontWeight: '700',
-            color: '#1f2937',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
             marginBottom: '2rem',
-            textAlign: 'center',
           }}
         >
-          Car Inventory
-        </h1>
+          <h1
+            style={{
+              fontSize: '2.5rem',
+              fontWeight: '700',
+              color: '#1f2937',
+              margin: 0,
+              flex: 1,
+              textAlign: 'center',
+            }}
+          >
+            Car Inventory
+          </h1>
+          <button
+            onClick={() => setIsChatBotOpen(true)}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              padding: '0.75rem 1.5rem',
+              backgroundColor: '#3b82f6',
+              color: 'white',
+              border: 'none',
+              borderRadius: '12px',
+              fontSize: '0.875rem',
+              fontWeight: '600',
+              cursor: 'pointer',
+              transition: 'all 0.2s ease',
+              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = '#2563eb';
+              e.currentTarget.style.transform = 'translateY(-1px)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = '#3b82f6';
+              e.currentTarget.style.transform = 'translateY(0)';
+            }}
+          >
+            <span style={{ fontSize: '1.125rem' }}>🤖</span>
+            AI Assistant
+          </button>
+        </div>
 
         <div
           style={{
@@ -385,6 +426,8 @@ function Home() {
           </div>
         )}
       </div>
+
+      <ChatBot isOpen={isChatBotOpen} onClose={() => setIsChatBotOpen(false)} />
     </div>
   );
 }
