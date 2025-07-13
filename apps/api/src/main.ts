@@ -37,40 +37,33 @@ app.get('/api/cars', (_, res) => {
   res.send(carDataset);
 });
 
-// Chat endpoint
+// Simple chat endpoint (no streaming)
 app.post('/api/chat', async (req, res) => {
   try {
-    const { message, history } = req.body;
+    console.log('📨 Received chat request:', req.body);
 
-    if (!message) {
-      return res.status(400).json({ error: 'Message is required' });
+    const { messages } = req.body;
+
+    if (!messages || !Array.isArray(messages)) {
+      console.log('❌ Invalid messages format');
+      return res.status(400).json({ error: 'Messages array is required' });
     }
 
-    // Convert history to the format expected by OpenAI
-    const chatMessages: ChatMessage[] = [];
+    console.log('💬 Messages:', messages);
 
-    if (history && Array.isArray(history)) {
-      history.forEach((msg: any) => {
-        if (msg.role === 'user' || msg.role === 'assistant') {
-          chatMessages.push({
-            role: msg.role,
-            content: msg.content,
-          });
-        }
-      });
-    }
+    // Convert messages to the format expected by OpenAI
+    const chatMessages: ChatMessage[] = messages.map((msg: any) => ({
+      role: msg.role,
+      content: msg.content,
+    }));
 
-    // Add the current message
-    chatMessages.push({
-      role: 'user',
-      content: message,
-    });
-
-    let responseMessage: string;
+    console.log('📤 Prepared chat messages:', chatMessages);
 
     if (isOpenAIConfigured()) {
-      // Use OpenAI API with tools
-      responseMessage = await getChatResponse(
+      console.log('🤖 Using OpenAI API with tools');
+
+      // Use OpenAI API with simple request/response
+      const responseMessage = await getChatResponse(
         chatMessages,
         `You are a helpful AI assistant for a car dealership. You can help customers with information about cars, features, pricing, and general questions. Be friendly, knowledgeable, and helpful. 
         
@@ -78,7 +71,11 @@ app.post('/api/chat', async (req, res) => {
         
         Always use the tool when you need car inventory information rather than making assumptions.`
       );
+
+      console.log('✅ Sending response:', responseMessage);
+      res.json({ message: responseMessage });
     } else {
+      console.log('⚠️ OpenAI not configured, using mock response');
       // Fallback to mock responses when OpenAI is not configured
       const mockResponses = [
         "I'm here to help! However, to provide you with accurate car inventory information, I need the OpenAI API to be configured.",
@@ -89,16 +86,16 @@ app.post('/api/chat', async (req, res) => {
         '⚠️  AI service not configured: Please add your OPENAI_API_KEY to environment variables to enable full chatbot functionality with car inventory access.',
       ];
 
-      responseMessage =
+      const responseMessage =
         mockResponses[Math.floor(Math.random() * mockResponses.length)];
 
       // Add a small delay to simulate AI processing
       await new Promise((resolve) => setTimeout(resolve, 1000));
-    }
 
-    res.json({ message: responseMessage });
+      res.json({ message: responseMessage });
+    }
   } catch (error) {
-    console.error('Chat error:', error);
+    console.error('❌ Chat error:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });

@@ -73,8 +73,10 @@ function ChatBot({ isOpen, onClose }: ChatBotProps) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          message: inputValue,
-          history: messages,
+          messages: [...messages, userMessage].map((msg) => ({
+            role: msg.role,
+            content: msg.content,
+          })),
         }),
       });
 
