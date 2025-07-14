@@ -1,4 +1,4 @@
-import { generateText } from 'ai';
+import { streamText } from 'ai';
 import { openai } from '@ai-sdk/openai';
 import { tools } from './ai-tools';
 
@@ -10,7 +10,7 @@ export interface ChatMessage {
 export async function getChatResponse(
   messages: ChatMessage[],
   systemMessage?: string
-): Promise<string> {
+) {
   try {
     console.log('🔑 OpenAI API Key configured:', !!process.env.OPENAI_API_KEY);
     console.log('📝 Input messages:', messages);
@@ -40,33 +40,25 @@ Examples of when to use getCars tool:
     console.log('🔄 Formatted messages for AI:', formattedMessages);
     console.log('🛠️ Available tools:', Object.keys(tools));
 
-    // Use generateText for simple request/response (no streaming)
-    const result = await generateText({
+    // Use streamText for real-time streaming responses
+    const result = await streamText({
       model: openai('gpt-3.5-turbo'),
       messages: formattedMessages,
       tools,
       maxTokens: 500,
       temperature: 0.7,
-      maxSteps: 2,
+      maxSteps: 10,
     });
 
-    console.log('✅ AI Response received:', result.text);
+    console.log('✅ AI Stream initiated');
 
-    return result.text;
+    // Return the stream result for the API endpoint to handle
+    return result;
   } catch (error) {
     console.error('❌ AI API error:', error);
 
-    // Return a helpful error message
-    if (error instanceof Error) {
-      if (error.message.includes('API key')) {
-        return "I'm sorry, the AI service is not properly configured. Please check the OpenAI API key configuration.";
-      }
-      if (error.message.includes('401')) {
-        return 'Authentication failed. Please check your OpenAI API key.';
-      }
-    }
-
-    return "I'm sorry, I'm having trouble connecting to the AI service right now. Please try again later.";
+    // For errors, we'll throw them so the API endpoint can handle them
+    throw error;
   }
 }
 

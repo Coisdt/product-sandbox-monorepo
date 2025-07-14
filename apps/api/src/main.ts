@@ -37,7 +37,7 @@ app.get('/api/cars', (_, res) => {
   res.send(carDataset);
 });
 
-// Simple chat endpoint (no streaming)
+// Streaming chat endpoint
 app.post('/api/chat', async (req, res) => {
   try {
     console.log('📨 Received chat request:', req.body);
@@ -60,20 +60,42 @@ app.post('/api/chat', async (req, res) => {
     console.log('📤 Prepared chat messages:', chatMessages);
 
     if (isOpenAIConfigured()) {
-      console.log('🤖 Using OpenAI API with tools');
+      console.log('🤖 Using OpenAI API with streaming');
+      try {
+        // Use OpenAI API with streaming
+        const result = await getChatResponse(
+          chatMessages,
+          `You are a helpful AI assistant for a car dealership. You can help customers with information about cars, features, pricing, and general questions. Be friendly, knowledgeable, and helpful. 
+          
+          When customers ask about cars, inventory, or want to see what's available, use the getCars tool to get the current car inventory data. This will give you accurate, up-to-date information about all the cars we have available including their make, model, year, price, features, and other details.
+          
+          Always use the tool when you need car inventory information rather than making assumptions.`
+        );
 
-      // Use OpenAI API with simple request/response
-      const responseMessage = await getChatResponse(
-        chatMessages,
-        `You are a helpful AI assistant for a car dealership. You can help customers with information about cars, features, pricing, and general questions. Be friendly, knowledgeable, and helpful. 
-        
-        When customers ask about cars, inventory, or want to see what's available, use the getCars tool to get the current car inventory data. This will give you accurate, up-to-date information about all the cars we have available including their make, model, year, price, features, and other details.
-        
-        Always use the tool when you need car inventory information rather than making assumptions.`
-      );
+        // Convert to a streaming response that the AI SDK can understand
+        return result.pipeDataStreamToResponse(res);
+      } catch (aiError) {
+        console.error('❌ AI streaming error:', aiError);
 
-      console.log('✅ Sending response:', responseMessage);
-      res.json({ message: responseMessage });
+        // Handle specific AI errors
+        let errorMessage =
+          "I'm sorry, I'm having trouble connecting to the AI service right now. Please try again later.";
+
+        if (aiError instanceof Error) {
+          if (aiError.message.includes('API key')) {
+            errorMessage =
+              "I'm sorry, the AI service is not properly configured. Please check the OpenAI API key configuration.";
+          } else if (aiError.message.includes('401')) {
+            errorMessage =
+              'Authentication failed. Please check your OpenAI API key.';
+          } else if (aiError.message.includes('insufficient_quota')) {
+            errorMessage =
+              'OpenAI API quota exceeded. Please check your billing settings.';
+          }
+        }
+
+        return res.json({ error: errorMessage });
+      }
     } else {
       console.log('⚠️ OpenAI not configured, using mock response');
       // Fallback to mock responses when OpenAI is not configured
@@ -92,11 +114,11 @@ app.post('/api/chat', async (req, res) => {
       // Add a small delay to simulate AI processing
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      res.json({ message: responseMessage });
+      return res.json({ message: responseMessage });
     }
   } catch (error) {
     console.error('❌ Chat error:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    return res.status(500).json({ error: 'Internal server error' });
   }
 });
 

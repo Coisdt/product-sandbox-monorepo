@@ -1,4 +1,6 @@
-import { useState, useRef, useEffect } from 'react';
+import { useChat } from '@ai-sdk/react';
+import { useRef, useEffect } from 'react';
+import ReactMarkdown from 'react-markdown';
 
 // Add CSS animations for the loading dots
 const loadingDotsStyle = `
@@ -19,29 +21,24 @@ if (typeof document !== 'undefined') {
   document.head.appendChild(style);
 }
 
-interface Message {
-  id: string;
-  content: string;
-  role: 'user' | 'assistant';
-  timestamp: Date;
-}
-
 interface ChatBotProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
 function ChatBot({ isOpen, onClose }: ChatBotProps) {
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: '1',
-      content: "Hello! I'm your AI assistant. How can I help you today?",
-      role: 'assistant',
-      timestamp: new Date(),
-    },
-  ]);
-  const [inputValue, setInputValue] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const { messages, input, handleInputChange, handleSubmit, isLoading, error } =
+    useChat({
+      api: 'http://localhost:3333/api/chat',
+      initialMessages: [
+        {
+          id: '1',
+          content: "Hello! I'm your AI assistant. How can I help you today?",
+          role: 'assistant',
+        },
+      ],
+    });
+
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -52,66 +49,10 @@ function ChatBot({ isOpen, onClose }: ChatBotProps) {
     scrollToBottom();
   }, [messages]);
 
-  const sendMessage = async () => {
-    if (!inputValue.trim() || isLoading) return;
-
-    const userMessage: Message = {
-      id: Date.now().toString(),
-      content: inputValue,
-      role: 'user',
-      timestamp: new Date(),
-    };
-
-    setMessages((prev) => [...prev, userMessage]);
-    setInputValue('');
-    setIsLoading(true);
-
-    try {
-      const response = await fetch('http://localhost:3333/api/chat', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          messages: [...messages, userMessage].map((msg) => ({
-            role: msg.role,
-            content: msg.content,
-          })),
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to get response');
-      }
-
-      const data = await response.json();
-
-      const assistantMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        content: data.message,
-        role: 'assistant',
-        timestamp: new Date(),
-      };
-
-      setMessages((prev) => [...prev, assistantMessage]);
-    } catch (error) {
-      console.error('Error sending message:', error);
-      const errorMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        content: 'Sorry, I encountered an error. Please try again.',
-        role: 'assistant',
-        timestamp: new Date(),
-      };
-      setMessages((prev) => [...prev, errorMessage]);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
-      sendMessage();
+      handleSubmit(e);
     }
   };
 
@@ -167,6 +108,17 @@ function ChatBot({ isOpen, onClose }: ChatBotProps) {
               }}
             >
               AI Assistant
+              {isLoading && (
+                <span
+                  style={{
+                    color: '#3b82f6',
+                    fontSize: '0.75rem',
+                    marginLeft: '0.5rem',
+                  }}
+                >
+                  (streaming...)
+                </span>
+              )}
             </h3>
             <p
               style={{
@@ -223,9 +175,64 @@ function ChatBot({ isOpen, onClose }: ChatBotProps) {
                   color: message.role === 'user' ? 'white' : '#1f2937',
                   fontSize: '0.875rem',
                   lineHeight: '1.4',
+                  whiteSpace: 'pre-wrap',
                 }}
               >
-                {message.content}
+                {message.role === 'assistant' ? (
+                  <ReactMarkdown
+                    components={{
+                      // Style the markdown components
+                      p: ({ children }) => (
+                        <p style={{ margin: '0 0 0.5rem 0' }}>{children}</p>
+                      ),
+                      strong: ({ children }) => (
+                        <strong style={{ fontWeight: '600' }}>
+                          {children}
+                        </strong>
+                      ),
+                      em: ({ children }) => (
+                        <em style={{ fontStyle: 'italic' }}>{children}</em>
+                      ),
+                      ul: ({ children }) => (
+                        <ul
+                          style={{ margin: '0.5rem 0', paddingLeft: '1.5rem' }}
+                        >
+                          {children}
+                        </ul>
+                      ),
+                      ol: ({ children }) => (
+                        <ol
+                          style={{ margin: '0.5rem 0', paddingLeft: '1.5rem' }}
+                        >
+                          {children}
+                        </ol>
+                      ),
+                      li: ({ children }) => (
+                        <li style={{ marginBottom: '0.25rem' }}>{children}</li>
+                      ),
+                      code: ({ children }) => (
+                        <code
+                          style={{
+                            backgroundColor:
+                              message.role === 'user'
+                                ? 'rgba(255,255,255,0.2)'
+                                : 'rgba(0,0,0,0.1)',
+                            padding: '0.125rem 0.25rem',
+                            borderRadius: '4px',
+                            fontSize: '0.8125rem',
+                            fontFamily: 'monospace',
+                          }}
+                        >
+                          {children}
+                        </code>
+                      ),
+                    }}
+                  >
+                    {message.content}
+                  </ReactMarkdown>
+                ) : (
+                  message.content
+                )}
               </div>
             </div>
           ))}
@@ -279,6 +286,30 @@ function ChatBot({ isOpen, onClose }: ChatBotProps) {
             </div>
           )}
 
+          {error && (
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'flex-start',
+              }}
+            >
+              <div
+                style={{
+                  maxWidth: '80%',
+                  padding: '0.75rem 1rem',
+                  borderRadius: '18px',
+                  backgroundColor: '#fef2f2',
+                  color: '#dc2626',
+                  fontSize: '0.875rem',
+                  lineHeight: '1.4',
+                  border: '1px solid #fecaca',
+                }}
+              >
+                Sorry, I encountered an error. Please try again.
+              </div>
+            </div>
+          )}
+
           <div ref={messagesEndRef} />
         </div>
 
@@ -289,49 +320,51 @@ function ChatBot({ isOpen, onClose }: ChatBotProps) {
             borderTop: '1px solid #e5e7eb',
           }}
         >
-          <div
-            style={{
-              display: 'flex',
-              gap: '0.5rem',
-            }}
-          >
-            <input
-              type="text"
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-              onKeyPress={handleKeyPress}
-              placeholder="Type your message..."
-              disabled={isLoading}
+          <form onSubmit={handleSubmit}>
+            <div
               style={{
-                flex: 1,
-                padding: '0.75rem',
-                border: '1px solid #d1d5db',
-                borderRadius: '12px',
-                fontSize: '0.875rem',
-                outline: 'none',
-                backgroundColor: isLoading ? '#f9fafb' : 'white',
-              }}
-            />
-            <button
-              onClick={sendMessage}
-              disabled={!inputValue.trim() || isLoading}
-              style={{
-                padding: '0.75rem 1.5rem',
-                backgroundColor:
-                  !inputValue.trim() || isLoading ? '#d1d5db' : '#3b82f6',
-                color: 'white',
-                border: 'none',
-                borderRadius: '12px',
-                fontSize: '0.875rem',
-                fontWeight: '600',
-                cursor:
-                  !inputValue.trim() || isLoading ? 'not-allowed' : 'pointer',
-                transition: 'background-color 0.2s ease',
+                display: 'flex',
+                gap: '0.5rem',
               }}
             >
-              Send
-            </button>
-          </div>
+              <input
+                type="text"
+                value={input}
+                onChange={handleInputChange}
+                onKeyPress={handleKeyPress}
+                placeholder="Type your message..."
+                disabled={isLoading}
+                style={{
+                  flex: 1,
+                  padding: '0.75rem',
+                  border: '1px solid #d1d5db',
+                  borderRadius: '12px',
+                  fontSize: '0.875rem',
+                  outline: 'none',
+                  backgroundColor: isLoading ? '#f9fafb' : 'white',
+                }}
+              />
+              <button
+                type="submit"
+                disabled={!input.trim() || isLoading}
+                style={{
+                  padding: '0.75rem 1.5rem',
+                  backgroundColor:
+                    !input.trim() || isLoading ? '#d1d5db' : '#3b82f6',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '12px',
+                  fontSize: '0.875rem',
+                  fontWeight: '600',
+                  cursor:
+                    !input.trim() || isLoading ? 'not-allowed' : 'pointer',
+                  transition: 'background-color 0.2s ease',
+                }}
+              >
+                {isLoading ? 'Sending...' : 'Send'}
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
