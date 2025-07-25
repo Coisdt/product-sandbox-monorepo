@@ -37,6 +37,17 @@ app.get('/api/cars', (_, res) => {
   res.send(carDataset);
 });
 
+app.get('/api/cars/:id', (req, res) => {
+  const carId = req.params.id;
+  const car = carDataset.find((car) => car.id === carId);
+
+  if (!car) {
+    return res.status(404).json({ error: `Car with ID ${carId} not found` });
+  }
+
+  res.json(car);
+});
+
 // Streaming chat endpoint
 app.post('/api/chat', async (req, res) => {
   try {

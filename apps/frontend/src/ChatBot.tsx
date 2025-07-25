@@ -1,8 +1,9 @@
 import { useChat } from '@ai-sdk/react';
 import { useRef, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
+import CarRecommendationCard from './CarRecommendationCard';
 
-// Add CSS animations for the loading dots
+// Add CSS animations for the loading dots and spinner
 const loadingDotsStyle = `
   @keyframes pulse {
     0%, 60%, 100% {
@@ -10,6 +11,15 @@ const loadingDotsStyle = `
     }
     30% {
       opacity: 1;
+    }
+  }
+  
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
     }
   }
 `;
@@ -37,6 +47,13 @@ function ChatBot({ isOpen, onClose }: ChatBotProps) {
           role: 'assistant',
         },
       ],
+      onToolCall: (call) => {
+        console.log('🔧 Tool call:', call.toolCall);
+        if (call.toolCall.toolName === 'recommendCar') {
+          console.log('🔧 Tool call:', call.toolCall);
+          return 'Handled by the UI';
+        }
+      },
     });
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -156,13 +173,12 @@ function ChatBot({ isOpen, onClose }: ChatBotProps) {
             gap: '1rem',
           }}
         >
-          {messages.map((message) => (
+          {messages.map(({ id, role, content, parts }) => (
             <div
-              key={message.id}
+              key={id}
               style={{
                 display: 'flex',
-                justifyContent:
-                  message.role === 'user' ? 'flex-end' : 'flex-start',
+                justifyContent: role === 'user' ? 'flex-end' : 'flex-start',
               }}
             >
               <div
@@ -170,15 +186,14 @@ function ChatBot({ isOpen, onClose }: ChatBotProps) {
                   maxWidth: '80%',
                   padding: '0.75rem 1rem',
                   borderRadius: '18px',
-                  backgroundColor:
-                    message.role === 'user' ? '#3b82f6' : '#f3f4f6',
-                  color: message.role === 'user' ? 'white' : '#1f2937',
+                  backgroundColor: role === 'user' ? '#3b82f6' : '#f3f4f6',
+                  color: role === 'user' ? 'white' : '#1f2937',
                   fontSize: '0.875rem',
                   lineHeight: '1.4',
                   whiteSpace: 'pre-wrap',
                 }}
               >
-                {message.role === 'assistant' ? (
+                {role === 'assistant' ? (
                   <ReactMarkdown
                     components={{
                       // Style the markdown components
@@ -214,7 +229,7 @@ function ChatBot({ isOpen, onClose }: ChatBotProps) {
                         <code
                           style={{
                             backgroundColor:
-                              message.role === 'user'
+                              role === 'assistant'
                                 ? 'rgba(255,255,255,0.2)'
                                 : 'rgba(0,0,0,0.1)',
                             padding: '0.125rem 0.25rem',
@@ -228,11 +243,66 @@ function ChatBot({ isOpen, onClose }: ChatBotProps) {
                       ),
                     }}
                   >
-                    {message.content}
+                    {content}
                   </ReactMarkdown>
                 ) : (
-                  message.content
+                  content
                 )}
+                {parts
+                  .filter((part) => part.type === 'tool-invocation')
+                  .map((toolCall) => {
+                    // Handle recommendCar tool calls with the car card component
+                    if (toolCall.toolInvocation.toolName === 'recommendCar') {
+                      const carId = toolCall.toolInvocation.args?.carId;
+                      return (
+                        <div key={toolCall.toolInvocation.toolName}>
+                          {carId ? (
+                            <CarRecommendationCard carId={carId} />
+                          ) : (
+                            <div
+                              style={{
+                                backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                                padding: '0.5rem',
+                                borderRadius: '8px',
+                                marginTop: '0.5rem',
+                                fontSize: '0.8rem',
+                                fontFamily: 'monospace',
+                              }}
+                            >
+                              <strong>Error:</strong> No car ID provided in tool
+                              call arguments
+                            </div>
+                          )}
+                        </div>
+                      );
+                    }
+
+                    // Handle other tool calls with the generic display
+                    // return (
+                    //   <div key={toolCall.toolInvocation.toolName}>
+                    //     <div
+                    //       style={{
+                    //         backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                    //         padding: '0.5rem',
+                    //         borderRadius: '8px',
+                    //         marginTop: '0.5rem',
+                    //         fontSize: '0.8rem',
+                    //         fontFamily: 'monospace',
+                    //       }}
+                    //     >
+                    //       <strong>Tool Call:</strong>{' '}
+                    //       {toolCall.toolInvocation.toolName}
+                    //       <br />
+                    //       <strong>Arguments:</strong>{' '}
+                    //       {JSON.stringify(
+                    //         toolCall.toolInvocation.args,
+                    //         null,
+                    //         2
+                    //       )}
+                    //     </div>
+                    //   </div>
+                    // );
+                  })}
               </div>
             </div>
           ))}

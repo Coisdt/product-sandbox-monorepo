@@ -47,7 +47,7 @@ Examples of when to use getCars tool:
       tools,
       maxTokens: 500,
       temperature: 0.7,
-      maxSteps: 10,
+      maxSteps: 3,
     });
 
     console.log('✅ AI Stream initiated');
