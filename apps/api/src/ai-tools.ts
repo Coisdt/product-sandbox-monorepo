@@ -3,14 +3,10 @@ import { z } from 'zod';
 import { fetchCars } from './assets/fetch';
 
 // Define tools using Vercel AI SDK format (like Jack Harrington's approach)
-export const getCarsSchema = z.object({
-  // No parameters needed for getting all cars
-});
-
 export const getCarsTool = tool({
   description:
     'Get all cars from the inventory. Use this to see what cars are available before making recommendations.',
-  parameters: getCarsSchema,
+  parameters: z.object({}) as any,
   execute: async () => {
     const cars = await fetchCars();
 
@@ -65,7 +61,7 @@ export const searchCarsTool = tool({
       .enum(['gasoline', 'diesel', 'electric', 'hybrid'])
       .optional()
       .describe('Engine type'),
-  }),
+  }) as any,
   execute: async ({
     make,
     model,
@@ -150,7 +146,7 @@ export const recommendCarTool = tool({
       .describe(
         'The ID of the car to recommend (e.g., car-001, car-002, etc.). Use getCars first to see available IDs.'
       ),
-  }),
+  }) as any,
   execute: async ({ carId }) => {
     const cars = await fetchCars();
     const car = cars.find((c) => c.id === carId);

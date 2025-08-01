@@ -19,14 +19,7 @@ export async function getChatResponse(
       systemMessage ||
       `You are a helpful AI assistant for a car dealership. You can help customers with information about cars, features, pricing, and general questions. Be friendly, knowledgeable, and helpful.
 
-IMPORTANT: When customers ask about cars, inventory, what's available, car models, prices, or want to see cars, you MUST use the getCars tool to get the current inventory data. Do not make assumptions about what cars are available - always use the tool to get real data.
-
-Examples of when to use getCars tool:
-- "What cars do you have?"
-- "Show me your inventory"
-- "What Honda models do you have?"
-- "How much does a Toyota cost?"
-- "What's available?"`;
+      When a customer asks to recommend a car, you MUST use the recommendCar tool. `;
 
     // Convert messages to the format expected by Vercel AI SDK
     const formattedMessages = [

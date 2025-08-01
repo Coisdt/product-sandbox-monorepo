@@ -4,6 +4,16 @@
   "sourceRoot": "apps/api/src",
   "projectType": "application",
   "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/api",
+        "main": "apps/api/src/main.ts",
+        "tsConfig": "apps/api/tsconfig.app.json",
+        "assets": ["apps/api/src/assets"]
+      }
+    },
     "serve": {
       "continuous": true,
       "executor": "@nx/js:node",
@@ -15,10 +25,10 @@
       },
       "configurations": {
         "development": {
-          "buildTarget": "api:build:development"
+          "buildTarget": "api:build"
         },
         "production": {
-          "buildTarget": "api:build:production"
+          "buildTarget": "api:build"
         }
       }
     }
