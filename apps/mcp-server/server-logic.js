@@ -8,9 +8,9 @@ export const server = new McpServer({
 });
 // Register getOrders tool
 server.registerTool(
-  'getOrders',
+  'getCars',
   {
-    description: 'Get product orders',
+    description: 'Get car inventory',
     inputSchema: {},
   },
   async () => {

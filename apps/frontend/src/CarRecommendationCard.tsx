@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface Car {
   id: string;
@@ -46,14 +47,17 @@ interface CarRecommendationCardProps {
 const CarRecommendationCard: React.FC<CarRecommendationCardProps> = ({
   carId,
 }) => {
+  const navigate = useNavigate();
   const [car, setCar] = useState<Car | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [imageError, setImageError] = useState(false);
 
   useEffect(() => {
     const fetchCar = async () => {
       try {
         setLoading(true);
+        setImageError(false); // Reset image error state when fetching new car
         const response = await fetch(`http://localhost:3333/api/cars/${carId}`);
 
         if (!response.ok) {
@@ -75,31 +79,31 @@ const CarRecommendationCard: React.FC<CarRecommendationCardProps> = ({
   if (loading) {
     return (
       <div
+        className="card"
         style={{
-          backgroundColor: 'white',
+          backgroundColor: 'var(--bg-card)',
           borderRadius: '12px',
-          padding: '1rem',
+          padding: '1.5rem',
           marginTop: '0.5rem',
-          border: '1px solid #e5e7eb',
-          boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+          border: '1px solid var(--border-primary)',
           minHeight: '120px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
         }}
       >
-        <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+        <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
           <div
             style={{
-              width: '16px',
-              height: '16px',
-              border: '2px solid #e5e7eb',
-              borderTop: '2px solid #3b82f6',
+              width: '20px',
+              height: '20px',
+              border: '2px solid var(--border-primary)',
+              borderTop: '2px solid var(--accent-primary)',
               borderRadius: '50%',
               animation: 'spin 1s linear infinite',
             }}
           />
-          <span style={{ color: '#6b7280', fontSize: '0.875rem' }}>
+          <span style={{ color: 'var(--text-secondary)', fontSize: '0.95rem' }}>
             Loading car details...
           </span>
         </div>
@@ -111,13 +115,13 @@ const CarRecommendationCard: React.FC<CarRecommendationCardProps> = ({
     return (
       <div
         style={{
-          backgroundColor: '#fef2f2',
+          backgroundColor: 'rgba(239, 68, 68, 0.1)',
           borderRadius: '12px',
-          padding: '1rem',
+          padding: '1.5rem',
           marginTop: '0.5rem',
-          border: '1px solid #fecaca',
-          color: '#dc2626',
-          fontSize: '0.875rem',
+          border: '1px solid rgba(239, 68, 68, 0.3)',
+          color: 'var(--danger)',
+          fontSize: '0.95rem',
         }}
       >
         <strong>Error:</strong> {error || 'Car not found'}
@@ -127,68 +131,144 @@ const CarRecommendationCard: React.FC<CarRecommendationCardProps> = ({
 
   return (
     <div
+      className="fade-in"
       style={{
-        backgroundColor: 'white',
-        borderRadius: '12px',
-        padding: '1.5rem',
+        backgroundColor: 'var(--bg-secondary)',
+        borderRadius: '8px',
+        padding: '0.75rem',
         marginTop: '0.5rem',
-        border: '1px solid #e5e7eb',
-        boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+        border: '1px solid var(--border-primary)',
         maxWidth: '100%',
+        boxShadow: '0 1px 4px rgba(0, 0, 0, 0.1)',
+        transition: 'all 0.2s ease',
       }}
     >
-      {/* Header */}
+      {/* Car Image */}
+      {car.images && car.images.length > 0 && (
+        <div
+          style={{
+            width: '100%',
+            height: '120px',
+            borderRadius: '6px',
+            marginBottom: '0.75rem',
+            overflow: 'hidden',
+            position: 'relative',
+            background: imageError 
+              ? 'linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%)'
+              : 'transparent',
+            display: imageError ? 'flex' : 'block',
+            alignItems: imageError ? 'center' : 'initial',
+            justifyContent: imageError ? 'center' : 'initial',
+          }}
+        >
+          {!imageError ? (
+            <img
+              src={car.images[0]}
+              alt={`${car.year} ${car.make} ${car.model}`}
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                transition: 'transform 0.2s ease',
+              }}
+              onError={() => {
+                setImageError(true);
+              }}
+            />
+          ) : (
+            <div
+              style={{
+                color: 'white',
+                fontSize: '2rem',
+                opacity: '0.9',
+              }}
+            >
+              🚗
+            </div>
+          )}
+          <div
+            style={{
+              position: 'absolute',
+              top: '8px',
+              right: '8px',
+              backgroundColor: 'rgba(0, 0, 0, 0.7)',
+              color: 'white',
+              padding: '4px 8px',
+              borderRadius: '4px',
+              fontSize: '0.7rem',
+              fontWeight: '600',
+              textTransform: 'uppercase',
+            }}
+          >
+            {car.condition}
+          </div>
+        </div>
+      )}
+
+      {/* Compact Header */}
       <div
         style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'flex-start',
-          marginBottom: '1rem',
+          marginBottom: '0.75rem',
         }}
       >
-        <div>
-          <h3
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'flex-start',
+            marginBottom: '0.5rem',
+          }}
+        >
+          <h4
             style={{
-              margin: '0 0 0.25rem 0',
-              fontSize: '1.25rem',
-              fontWeight: '600',
-              color: '#1f2937',
+              margin: '0',
+              fontSize: '1.125rem',
+              fontWeight: '700',
+              color: 'var(--text-primary)',
+              lineHeight: '1.3',
+              flex: 1,
+              marginRight: '0.75rem',
             }}
           >
             {car.year} {car.make} {car.model}
-          </h3>
-          <p
-            style={{
-              margin: '0',
-              fontSize: '0.875rem',
-              color: '#6b7280',
-            }}
-          >
-            {car.color} • {car.bodyType} • {car.condition}
-          </p>
-        </div>
-        <div
-          style={{
-            textAlign: 'right',
-          }}
-        >
+          </h4>
           <div
             style={{
-              fontSize: '1.5rem',
+              fontSize: '1.25rem',
               fontWeight: '700',
-              color: '#059669',
+              color: 'var(--accent-primary)',
+              lineHeight: '1',
+              textAlign: 'right',
+              flexShrink: 0,
             }}
           >
             ${car.price.toLocaleString()}
           </div>
+        </div>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            fontSize: '0.8rem',
+            color: 'var(--text-secondary)',
+          }}
+        >
           <div
             style={{
-              fontSize: '0.75rem',
-              color: '#6b7280',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.25rem',
+              flexWrap: 'wrap',
             }}
           >
-            {car.mileage.toLocaleString()} miles
+            <span>{car.color}</span>
+            <span>•</span>
+            <span>{car.bodyType}</span>
           </div>
+          <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+            {car.mileage.toLocaleString()} mi
+          </span>
         </div>
       </div>
 
@@ -196,288 +276,207 @@ const CarRecommendationCard: React.FC<CarRecommendationCardProps> = ({
       {car.description && (
         <p
           style={{
-            margin: '0 0 1rem 0',
-            fontSize: '0.875rem',
-            color: '#374151',
+            margin: '0 0 0.75rem 0',
+            fontSize: '0.85rem',
+            color: 'var(--text-secondary)',
             lineHeight: '1.5',
+            display: '-webkit-box',
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: 'vertical',
+            overflow: 'hidden',
           }}
         >
           {car.description}
         </p>
       )}
 
-      {/* Specs Grid */}
+      {/* Compact Specs */}
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))',
-          gap: '1rem',
-          marginBottom: '1rem',
+          gridTemplateColumns: '1fr 1fr',
+          gap: '0.5rem',
+          marginBottom: '0.75rem',
         }}
       >
-        <div>
+        <div
+          style={{
+            padding: '0.5rem',
+            backgroundColor: 'var(--bg-tertiary)',
+            borderRadius: '6px',
+            border: '1px solid var(--border-primary)',
+            textAlign: 'center',
+          }}
+        >
           <div
             style={{
-              fontSize: '0.75rem',
-              color: '#6b7280',
+              fontSize: '0.7rem',
+              color: 'var(--text-muted)',
               textTransform: 'uppercase',
-              fontWeight: '500',
+              fontWeight: '600',
               marginBottom: '0.25rem',
+              letterSpacing: '0.5px',
             }}
           >
             Engine
           </div>
           <div
             style={{
-              fontSize: '0.875rem',
-              color: '#1f2937',
-              fontWeight: '500',
+              fontSize: '0.95rem',
+              color: 'var(--text-primary)',
+              fontWeight: '700',
+              marginBottom: '0.125rem',
             }}
           >
-            {car.engine.horsepower} hp
+            {car.engine.horsepower} HP
           </div>
           <div
             style={{
-              fontSize: '0.75rem',
-              color: '#6b7280',
+              fontSize: '0.7rem',
+              color: 'var(--text-secondary)',
+              textTransform: 'capitalize',
             }}
           >
             {car.engine.type}
           </div>
         </div>
 
-        <div>
+        <div
+          style={{
+            padding: '0.5rem',
+            backgroundColor: 'var(--bg-tertiary)',
+            borderRadius: '6px',
+            border: '1px solid var(--border-primary)',
+            textAlign: 'center',
+          }}
+        >
           <div
             style={{
-              fontSize: '0.75rem',
-              color: '#6b7280',
+              fontSize: '0.7rem',
+              color: 'var(--text-muted)',
               textTransform: 'uppercase',
-              fontWeight: '500',
+              fontWeight: '600',
               marginBottom: '0.25rem',
-            }}
-          >
-            Transmission
-          </div>
-          <div
-            style={{
-              fontSize: '0.875rem',
-              color: '#1f2937',
-              fontWeight: '500',
-            }}
-          >
-            {car.transmission.type}
-          </div>
-          <div
-            style={{
-              fontSize: '0.75rem',
-              color: '#6b7280',
-            }}
-          >
-            {car.transmission.gears} gears
-          </div>
-        </div>
-
-        <div>
-          <div
-            style={{
-              fontSize: '0.75rem',
-              color: '#6b7280',
-              textTransform: 'uppercase',
-              fontWeight: '500',
-              marginBottom: '0.25rem',
-            }}
-          >
-            Drivetrain
-          </div>
-          <div
-            style={{
-              fontSize: '0.875rem',
-              color: '#1f2937',
-              fontWeight: '500',
-              textTransform: 'uppercase',
-            }}
-          >
-            {car.drivetrain}
-          </div>
-        </div>
-
-        <div>
-          <div
-            style={{
-              fontSize: '0.75rem',
-              color: '#6b7280',
-              textTransform: 'uppercase',
-              fontWeight: '500',
-              marginBottom: '0.25rem',
+              letterSpacing: '0.5px',
             }}
           >
             MPG
           </div>
           <div
             style={{
-              fontSize: '0.875rem',
-              color: '#1f2937',
-              fontWeight: '500',
+              fontSize: '0.95rem',
+              color: 'var(--text-primary)',
+              fontWeight: '700',
+              marginBottom: '0.125rem',
             }}
           >
             {car.fuelEconomy.combined}
           </div>
           <div
             style={{
-              fontSize: '0.75rem',
-              color: '#6b7280',
+              fontSize: '0.7rem',
+              color: 'var(--text-secondary)',
             }}
           >
             combined
           </div>
         </div>
+
       </div>
 
-      {/* Features */}
+      {/* Key Features */}
       {car.features.length > 0 && (
-        <div style={{ marginBottom: '1rem' }}>
+        <div style={{ marginBottom: '0.75rem' }}>
           <div
             style={{
               fontSize: '0.75rem',
-              color: '#6b7280',
+              color: 'var(--text-muted)',
               textTransform: 'uppercase',
-              fontWeight: '500',
-              marginBottom: '0.5rem',
+              fontWeight: '600',
+              marginBottom: '0.375rem',
+              letterSpacing: '0.5px',
             }}
           >
-            Features
+            Key Features
           </div>
           <div
             style={{
               display: 'flex',
               flexWrap: 'wrap',
-              gap: '0.5rem',
+              gap: '0.25rem',
             }}
           >
-            {car.features.slice(0, 6).map((feature, index) => (
+            {car.features.slice(0, 3).map((feature, index) => (
               <span
                 key={index}
                 style={{
-                  backgroundColor: '#f3f4f6',
-                  color: '#374151',
+                  backgroundColor: 'rgba(34, 197, 94, 0.1)',
+                  color: 'var(--accent-primary)',
                   padding: '0.25rem 0.5rem',
                   borderRadius: '6px',
-                  fontSize: '0.75rem',
+                  fontSize: '0.7rem',
                   fontWeight: '500',
+                  border: '1px solid rgba(34, 197, 94, 0.2)',
                 }}
               >
                 {feature}
               </span>
             ))}
-            {car.features.length > 6 && (
+            {car.features.length > 3 && (
               <span
                 style={{
-                  backgroundColor: '#f3f4f6',
-                  color: '#6b7280',
+                  backgroundColor: 'var(--bg-tertiary)',
+                  color: 'var(--text-muted)',
                   padding: '0.25rem 0.5rem',
                   borderRadius: '6px',
-                  fontSize: '0.75rem',
+                  fontSize: '0.7rem',
+                  fontWeight: '500',
+                  border: '1px solid var(--border-primary)',
                 }}
               >
-                +{car.features.length - 6} more
+                +{car.features.length - 3}
               </span>
             )}
           </div>
         </div>
       )}
 
-      {/* Seller Info */}
-      {car.seller && (
-        <div
-          style={{
-            borderTop: '1px solid #e5e7eb',
-            paddingTop: '1rem',
-            marginTop: '1rem',
-          }}
-        >
-          <div
-            style={{
-              fontSize: '0.75rem',
-              color: '#6b7280',
-              textTransform: 'uppercase',
-              fontWeight: '500',
-              marginBottom: '0.5rem',
-            }}
-          >
-            Seller
-          </div>
-          <div
-            style={{
-              fontSize: '0.875rem',
-              color: '#1f2937',
-              fontWeight: '500',
-            }}
-          >
-            {car.seller.name}
-          </div>
-          <div
-            style={{
-              fontSize: '0.75rem',
-              color: '#6b7280',
-            }}
-          >
-            {car.seller.location} • {car.seller.contact}
-          </div>
-        </div>
-      )}
-
-      {/* Action Button */}
+      {/* Action Button - Single compact button */}
       <div
         style={{
           marginTop: '1rem',
-          display: 'flex',
-          gap: '0.5rem',
         }}
       >
         <button
+          onClick={(e) => {
+            e.stopPropagation();
+            navigate(`/car/${car.id}`);
+          }}
           style={{
-            flex: 1,
-            backgroundColor: '#3b82f6',
+            width: '100%',
+            backgroundColor: 'var(--accent-primary)',
             color: 'white',
             border: 'none',
             borderRadius: '8px',
             padding: '0.75rem',
-            fontSize: '0.875rem',
-            fontWeight: '600',
-            cursor: 'pointer',
-            transition: 'background-color 0.2s ease',
-          }}
-          onMouseOver={(e) =>
-            (e.currentTarget.style.backgroundColor = '#2563eb')
-          }
-          onMouseOut={(e) =>
-            (e.currentTarget.style.backgroundColor = '#3b82f6')
-          }
-        >
-          View Details
-        </button>
-        <button
-          style={{
-            backgroundColor: 'white',
-            color: '#3b82f6',
-            border: '1px solid #3b82f6',
-            borderRadius: '8px',
-            padding: '0.75rem',
-            fontSize: '0.875rem',
+            fontSize: '0.8rem',
             fontWeight: '600',
             cursor: 'pointer',
             transition: 'all 0.2s ease',
+            boxShadow: '0 1px 4px rgba(34, 197, 94, 0.3)',
           }}
           onMouseOver={(e) => {
-            e.currentTarget.style.backgroundColor = '#3b82f6';
-            e.currentTarget.style.color = 'white';
+            e.currentTarget.style.backgroundColor = 'var(--accent-secondary)';
+            e.currentTarget.style.transform = 'translateY(-1px)';
+            e.currentTarget.style.boxShadow = '0 2px 8px rgba(34, 197, 94, 0.4)';
           }}
           onMouseOut={(e) => {
-            e.currentTarget.style.backgroundColor = 'white';
-            e.currentTarget.style.color = '#3b82f6';
+            e.currentTarget.style.backgroundColor = 'var(--accent-primary)';
+            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.boxShadow = '0 1px 4px rgba(34, 197, 94, 0.3)';
           }}
         >
-          Contact
+          View Details
         </button>
       </div>
     </div>

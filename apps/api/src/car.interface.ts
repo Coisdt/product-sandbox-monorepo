@@ -113,6 +113,11 @@ export const carDataset: Car[] = [
     vin: '4T1C11AK5NU123456',
     dateAdded: new Date('2024-01-15'),
     isAvailable: true,
+    images: [
+      'https://images.unsplash.com/photo-1619767886558-efdc259cde1a?w=800&h=600&fit=crop&crop=center',
+      'https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=800&h=600&fit=crop&crop=center',
+      'https://images.unsplash.com/photo-1623869675991-5be8c6c8ba9b?w=800&h=600&fit=crop&crop=center'
+    ],
     description:
       'Well-maintained 2023 Toyota Camry with low mileage and excellent fuel economy.',
     seller: {
@@ -156,6 +161,11 @@ export const carDataset: Car[] = [
     vin: '5YJ3E1EA5PF123789',
     dateAdded: new Date('2024-02-01'),
     isAvailable: true,
+    images: [
+      'https://images.unsplash.com/photo-1560958089-b8a1929cea89?w=800&h=600&fit=crop&crop=center',
+      'https://images.unsplash.com/photo-1571068316344-75bc76f77890?w=800&h=600&fit=crop&crop=center',
+      'https://images.unsplash.com/photo-1617788138017-80ad40651399?w=800&h=600&fit=crop&crop=center'
+    ],
     description:
       'Nearly new Tesla Model 3 with latest software updates and premium features.',
     seller: {
@@ -200,6 +210,11 @@ export const carDataset: Car[] = [
     vin: '1FTFW1E84NFA12345',
     dateAdded: new Date('2024-01-20'),
     isAvailable: true,
+    images: [
+      'https://images.unsplash.com/photo-1566473965997-3de9c817e938?w=800&h=600&fit=crop&crop=center',
+      'https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=800&h=600&fit=crop&crop=center',
+      'https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?w=800&h=600&fit=crop&crop=center'
+    ],
     description:
       'Powerful F-150 with towing capability and 4WD for all terrain driving.',
     seller: {
@@ -244,6 +259,11 @@ export const carDataset: Car[] = [
     vin: '2HKRW2H85NH123456',
     dateAdded: new Date('2024-01-30'),
     isAvailable: true,
+    images: [
+      'https://images.unsplash.com/photo-1606220588913-b3aacb4d2f46?w=800&h=600&fit=crop&crop=center',
+      'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&h=600&fit=crop&crop=center',
+      'https://images.unsplash.com/photo-1614027164847-1b28cfe1df60?w=800&h=600&fit=crop&crop=center'
+    ],
     description:
       'Reliable Honda CR-V with all-wheel drive and comprehensive safety features.',
     seller: {
@@ -288,6 +308,11 @@ export const carDataset: Car[] = [
     vin: 'WBA5R1C02PF123456',
     dateAdded: new Date('2024-02-10'),
     isAvailable: true,
+    images: [
+      'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=800&h=600&fit=crop&crop=center',
+      'https://images.unsplash.com/photo-1563720223395-9a8c6aca4b7a?w=800&h=600&fit=crop&crop=center',
+      'https://images.unsplash.com/photo-1619767886558-efdc259cde1a?w=800&h=600&fit=crop&crop=center'
+    ],
     description:
       'Brand new BMW 3 Series with luxury features and sporty performance.',
     seller: {
@@ -332,6 +357,11 @@ export const carDataset: Car[] = [
     vin: '4S4BSANC5M3123456',
     dateAdded: new Date('2024-01-25'),
     isAvailable: true,
+    images: [
+      'https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=800&h=600&fit=crop&crop=center',
+      'https://images.unsplash.com/photo-1518756131217-31eb79b20e8f?w=800&h=600&fit=crop&crop=center',
+      'https://images.unsplash.com/photo-1581540222194-0def2dda95b8?w=800&h=600&fit=crop&crop=center'
+    ],
     description:
       'Adventure-ready Subaru Outback with standard all-wheel drive and excellent ground clearance.',
     seller: {
@@ -376,6 +406,11 @@ export const carDataset: Car[] = [
     vin: 'WP0AA2A96PS123456',
     dateAdded: new Date('2024-02-05'),
     isAvailable: true,
+    images: [
+      'https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?w=800&h=600&fit=crop&crop=center',
+      'https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=800&h=600&fit=crop&crop=center',
+      'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&crop=center'
+    ],
     description:
       'Iconic Porsche 911 with manual transmission and track-ready performance features.',
     seller: {
@@ -419,6 +454,11 @@ export const carDataset: Car[] = [
     vin: '1G1FY6S07P4123456',
     dateAdded: new Date('2024-02-08'),
     isAvailable: true,
+    images: [
+      'https://images.unsplash.com/photo-1542362567-b07e54358753?w=800&h=600&fit=crop&crop=center',
+      'https://images.unsplash.com/photo-1617469767053-d3b523a0b982?w=800&h=600&fit=crop&crop=center',
+      'https://images.unsplash.com/photo-1608222907050-ee5f7d20e2b9?w=800&h=600&fit=crop&crop=center'
+    ],
     description:
       'Efficient electric vehicle with long range and modern technology features.',
     seller: {
