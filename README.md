@@ -95,3 +95,29 @@ And join the Nx community:
 - [Our Youtube channel](https://www.youtube.com/@nxdevtools)
 - [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
 # product-sandbox-monorepo
+
+
+## WebStorm Run Configurations
+
+This repo includes ready-to-use WebStorm Run/Debug configurations committed under the `.run` directory. WebStorm will auto-detect them when you open the project.
+
+Available configurations:
+- Run API (Nx serve api) – runs `npx nx serve api` from the project root on port 3333.
+- Run Frontend (Nx serve frontend) – runs `npx nx serve frontend` from the project root on port 5173.
+
+How to use:
+1) Open the project in WebStorm.
+2) Open the Run/Debug dropdown (top right). You should see both configurations.
+3) Select one and click Run or Debug.
+
+Environment variables:
+- The API supports AI features via OpenAI if `OPENAI_API_KEY` is set. You can set it per configuration:
+  - Run | Edit Configurations… | select the configuration | Environment variables | add `OPENAI_API_KEY=<your-key>`.
+- Ports can be adjusted via the `PORT` env var in the same place. Defaults:
+  - API: 3333
+  - Frontend: 5173
+
+Notes:
+- The API exposes endpoints at `http://localhost:3333/api` (e.g., `/api`, `/api/cars`, `/api/chat`).
+- If `OPENAI_API_KEY` is not set, the `/api/chat` endpoint returns friendly mock responses.
+- These configurations simply wrap the Nx commands; you can still run them via terminal: `npx nx serve api` and `npx nx serve frontend`.

@@ -1,10 +1,10 @@
-# TanStack Start + Express Monorepo Setup
+TanStack Start + Express Monorepo Setup
 
-## 1. Create Nx workspace
+# 1. Create Nx workspace
 
-# Run this from the parent directory where you want your new monorepo
+## Run this from the parent directory where you want your new monorepo
 
-# This creates a new directory with the name you specify (e.g., "my-monorepo")
+This creates a new directory with the name you specify (e.g., "my-monorepo")
 
 npx create-nx-workspace@latest my-monorepo --preset=empty
 

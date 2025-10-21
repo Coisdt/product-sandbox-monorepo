@@ -153,7 +153,7 @@ const CarRecommendationCard: React.FC<CarRecommendationCardProps> = ({
             marginBottom: '0.75rem',
             overflow: 'hidden',
             position: 'relative',
-            background: imageError 
+            background: imageError
               ? 'linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%)'
               : 'transparent',
             display: imageError ? 'flex' : 'block',
@@ -381,7 +381,6 @@ const CarRecommendationCard: React.FC<CarRecommendationCardProps> = ({
             combined
           </div>
         </div>
-
       </div>
 
       {/* Key Features */}
@@ -468,12 +467,14 @@ const CarRecommendationCard: React.FC<CarRecommendationCardProps> = ({
           onMouseOver={(e) => {
             e.currentTarget.style.backgroundColor = 'var(--accent-secondary)';
             e.currentTarget.style.transform = 'translateY(-1px)';
-            e.currentTarget.style.boxShadow = '0 2px 8px rgba(34, 197, 94, 0.4)';
+            e.currentTarget.style.boxShadow =
+              '0 2px 8px rgba(34, 197, 94, 0.4)';
           }}
           onMouseOut={(e) => {
             e.currentTarget.style.backgroundColor = 'var(--accent-primary)';
             e.currentTarget.style.transform = 'translateY(0)';
-            e.currentTarget.style.boxShadow = '0 1px 4px rgba(34, 197, 94, 0.3)';
+            e.currentTarget.style.boxShadow =
+              '0 1px 4px rgba(34, 197, 94, 0.3)';
           }}
         >
           View Details

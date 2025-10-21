@@ -20,15 +20,17 @@ function CarDetails() {
       try {
         setLoading(true);
         const response = await fetch(`http://localhost:3333/api/cars/${id}`);
-        
+
         if (!response.ok) {
           throw new Error(`Car with ID ${id} not found`);
         }
-        
+
         const data = await response.json();
         setCar(data);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to fetch car details');
+        setError(
+          err instanceof Error ? err.message : 'Failed to fetch car details'
+        );
       } finally {
         setLoading(false);
       }
@@ -235,7 +237,7 @@ function CarDetails() {
           >
             ← Back to Inventory
           </button>
-          
+
           {/* Theme Toggle Button */}
           <button
             onClick={toggleTheme}
@@ -304,14 +306,17 @@ function CarDetails() {
                       e.currentTarget.style.display = 'none';
                       const parent = e.currentTarget.parentElement;
                       if (parent) {
-                        parent.style.background = 'linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%)';
+                        parent.style.background =
+                          'linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%)';
                         parent.style.display = 'flex';
                         parent.style.alignItems = 'center';
                         parent.style.justifyContent = 'center';
                         const overlay = document.createElement('div');
-                        overlay.style.cssText = 'position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.1) 0%, transparent 50%);';
+                        overlay.style.cssText =
+                          'position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.1) 0%, transparent 50%);';
                         const emoji = document.createElement('div');
-                        emoji.style.cssText = 'color: white; font-size: 6rem; opacity: 0.9; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.3)); z-index: 1;';
+                        emoji.style.cssText =
+                          'color: white; font-size: 6rem; opacity: 0.9; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.3)); z-index: 1;';
                         emoji.textContent = '🚗';
                         parent.appendChild(overlay);
                         parent.appendChild(emoji);
@@ -322,7 +327,8 @@ function CarDetails() {
                   <div
                     style={{
                       height: '100%',
-                      background: 'linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%)',
+                      background:
+                        'linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%)',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
@@ -335,7 +341,8 @@ function CarDetails() {
                         left: '0',
                         right: '0',
                         bottom: '0',
-                        background: 'radial-gradient(circle at 30% 20%, rgba(255,255,255,0.1) 0%, transparent 50%)',
+                        background:
+                          'radial-gradient(circle at 30% 20%, rgba(255,255,255,0.1) 0%, transparent 50%)',
                       }}
                     />
                     <div
@@ -488,7 +495,7 @@ function CarDetails() {
               >
                 Specifications
               </h2>
-              
+
               <div
                 style={{
                   display: 'grid',
@@ -510,29 +517,84 @@ function CarDetails() {
                   >
                     Engine
                   </h3>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <span style={{ color: 'var(--text-secondary)' }}>Type:</span>
-                      <span style={{ color: 'var(--text-primary)', fontWeight: '500', textTransform: 'capitalize' }}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '0.75rem',
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                      }}
+                    >
+                      <span style={{ color: 'var(--text-secondary)' }}>
+                        Type:
+                      </span>
+                      <span
+                        style={{
+                          color: 'var(--text-primary)',
+                          fontWeight: '500',
+                          textTransform: 'capitalize',
+                        }}
+                      >
                         {car.engine.type}
                       </span>
                     </div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <span style={{ color: 'var(--text-secondary)' }}>Horsepower:</span>
-                      <span style={{ color: 'var(--text-primary)', fontWeight: '500' }}>
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                      }}
+                    >
+                      <span style={{ color: 'var(--text-secondary)' }}>
+                        Horsepower:
+                      </span>
+                      <span
+                        style={{
+                          color: 'var(--text-primary)',
+                          fontWeight: '500',
+                        }}
+                      >
                         {car.engine.horsepower} HP
                       </span>
                     </div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <span style={{ color: 'var(--text-secondary)' }}>Torque:</span>
-                      <span style={{ color: 'var(--text-primary)', fontWeight: '500' }}>
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                      }}
+                    >
+                      <span style={{ color: 'var(--text-secondary)' }}>
+                        Torque:
+                      </span>
+                      <span
+                        style={{
+                          color: 'var(--text-primary)',
+                          fontWeight: '500',
+                        }}
+                      >
                         {car.engine.torque} lb-ft
                       </span>
                     </div>
                     {car.engine.displacement && (
-                      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <span style={{ color: 'var(--text-secondary)' }}>Displacement:</span>
-                        <span style={{ color: 'var(--text-primary)', fontWeight: '500' }}>
+                      <div
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                        }}
+                      >
+                        <span style={{ color: 'var(--text-secondary)' }}>
+                          Displacement:
+                        </span>
+                        <span
+                          style={{
+                            color: 'var(--text-primary)',
+                            fontWeight: '500',
+                          }}
+                        >
                           {car.engine.displacement}L
                         </span>
                       </div>
@@ -554,22 +616,65 @@ function CarDetails() {
                   >
                     Drivetrain
                   </h3>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <span style={{ color: 'var(--text-secondary)' }}>Transmission:</span>
-                      <span style={{ color: 'var(--text-primary)', fontWeight: '500' }}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '0.75rem',
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                      }}
+                    >
+                      <span style={{ color: 'var(--text-secondary)' }}>
+                        Transmission:
+                      </span>
+                      <span
+                        style={{
+                          color: 'var(--text-primary)',
+                          fontWeight: '500',
+                        }}
+                      >
                         {car.transmission.type}
                       </span>
                     </div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <span style={{ color: 'var(--text-secondary)' }}>Gears:</span>
-                      <span style={{ color: 'var(--text-primary)', fontWeight: '500' }}>
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                      }}
+                    >
+                      <span style={{ color: 'var(--text-secondary)' }}>
+                        Gears:
+                      </span>
+                      <span
+                        style={{
+                          color: 'var(--text-primary)',
+                          fontWeight: '500',
+                        }}
+                      >
                         {car.transmission.gears}
                       </span>
                     </div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <span style={{ color: 'var(--text-secondary)' }}>Drive Type:</span>
-                      <span style={{ color: 'var(--text-primary)', fontWeight: '500', textTransform: 'uppercase' }}>
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                      }}
+                    >
+                      <span style={{ color: 'var(--text-secondary)' }}>
+                        Drive Type:
+                      </span>
+                      <span
+                        style={{
+                          color: 'var(--text-primary)',
+                          fontWeight: '500',
+                          textTransform: 'uppercase',
+                        }}
+                      >
                         {car.drivetrain}
                       </span>
                     </div>
@@ -590,22 +695,64 @@ function CarDetails() {
                   >
                     Fuel Economy
                   </h3>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <span style={{ color: 'var(--text-secondary)' }}>City:</span>
-                      <span style={{ color: 'var(--text-primary)', fontWeight: '500' }}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '0.75rem',
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                      }}
+                    >
+                      <span style={{ color: 'var(--text-secondary)' }}>
+                        City:
+                      </span>
+                      <span
+                        style={{
+                          color: 'var(--text-primary)',
+                          fontWeight: '500',
+                        }}
+                      >
                         {car.fuelEconomy.city} mpg
                       </span>
                     </div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <span style={{ color: 'var(--text-secondary)' }}>Highway:</span>
-                      <span style={{ color: 'var(--text-primary)', fontWeight: '500' }}>
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                      }}
+                    >
+                      <span style={{ color: 'var(--text-secondary)' }}>
+                        Highway:
+                      </span>
+                      <span
+                        style={{
+                          color: 'var(--text-primary)',
+                          fontWeight: '500',
+                        }}
+                      >
                         {car.fuelEconomy.highway} mpg
                       </span>
                     </div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <span style={{ color: 'var(--text-secondary)' }}>Combined:</span>
-                      <span style={{ color: 'var(--text-primary)', fontWeight: '500' }}>
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                      }}
+                    >
+                      <span style={{ color: 'var(--text-secondary)' }}>
+                        Combined:
+                      </span>
+                      <span
+                        style={{
+                          color: 'var(--text-primary)',
+                          fontWeight: '500',
+                        }}
+                      >
                         {car.fuelEconomy.combined} mpg
                       </span>
                     </div>
@@ -626,24 +773,64 @@ function CarDetails() {
                   >
                     Vehicle Info
                   </h3>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <span style={{ color: 'var(--text-secondary)' }}>VIN:</span>
-                      <span style={{ color: 'var(--text-primary)', fontWeight: '500', fontFamily: 'monospace' }}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '0.75rem',
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                      }}
+                    >
+                      <span style={{ color: 'var(--text-secondary)' }}>
+                        VIN:
+                      </span>
+                      <span
+                        style={{
+                          color: 'var(--text-primary)',
+                          fontWeight: '500',
+                          fontFamily: 'monospace',
+                        }}
+                      >
                         {car.vin}
                       </span>
                     </div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <span style={{ color: 'var(--text-secondary)' }}>Date Added:</span>
-                      <span style={{ color: 'var(--text-primary)', fontWeight: '500' }}>
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                      }}
+                    >
+                      <span style={{ color: 'var(--text-secondary)' }}>
+                        Date Added:
+                      </span>
+                      <span
+                        style={{
+                          color: 'var(--text-primary)',
+                          fontWeight: '500',
+                        }}
+                      >
                         {new Date(car.dateAdded).toLocaleDateString()}
                       </span>
                     </div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <span style={{ color: 'var(--text-secondary)' }}>Status:</span>
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                      }}
+                    >
+                      <span style={{ color: 'var(--text-secondary)' }}>
+                        Status:
+                      </span>
                       <span
                         style={{
-                          color: car.isAvailable ? 'var(--success)' : 'var(--danger)',
+                          color: car.isAvailable
+                            ? 'var(--success)'
+                            : 'var(--danger)',
                           fontWeight: '500',
                         }}
                       >
@@ -760,16 +947,58 @@ function CarDetails() {
                     >
                       {car.seller.name}
                     </h4>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                        <span style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>📍</span>
-                        <span style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '0.5rem',
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '0.5rem',
+                        }}
+                      >
+                        <span
+                          style={{
+                            color: 'var(--text-secondary)',
+                            fontSize: '0.875rem',
+                          }}
+                        >
+                          📍
+                        </span>
+                        <span
+                          style={{
+                            color: 'var(--text-secondary)',
+                            fontSize: '0.875rem',
+                          }}
+                        >
                           {car.seller.location}
                         </span>
                       </div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                        <span style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>📞</span>
-                        <span style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>
+                      <div
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '0.5rem',
+                        }}
+                      >
+                        <span
+                          style={{
+                            color: 'var(--text-secondary)',
+                            fontSize: '0.875rem',
+                          }}
+                        >
+                          📞
+                        </span>
+                        <span
+                          style={{
+                            color: 'var(--text-secondary)',
+                            fontSize: '0.875rem',
+                          }}
+                        >
                           {car.seller.contact}
                         </span>
                       </div>
@@ -794,7 +1023,13 @@ function CarDetails() {
               )}
 
               {/* Action Buttons */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '1rem',
+                }}
+              >
                 <button
                   onClick={() => setIsChatBotOpen(true)}
                   style={{
@@ -811,19 +1046,23 @@ function CarDetails() {
                     boxShadow: '0 2px 8px rgba(34, 197, 94, 0.3)',
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = 'var(--accent-secondary)';
+                    e.currentTarget.style.backgroundColor =
+                      'var(--accent-secondary)';
                     e.currentTarget.style.transform = 'translateY(-1px)';
-                    e.currentTarget.style.boxShadow = '0 4px 12px rgba(34, 197, 94, 0.4)';
+                    e.currentTarget.style.boxShadow =
+                      '0 4px 12px rgba(34, 197, 94, 0.4)';
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = 'var(--accent-primary)';
+                    e.currentTarget.style.backgroundColor =
+                      'var(--accent-primary)';
                     e.currentTarget.style.transform = 'translateY(0)';
-                    e.currentTarget.style.boxShadow = '0 2px 8px rgba(34, 197, 94, 0.3)';
+                    e.currentTarget.style.boxShadow =
+                      '0 2px 8px rgba(34, 197, 94, 0.3)';
                   }}
                 >
                   🤖 Ask AI About This Car
                 </button>
-                
+
                 <button
                   style={{
                     width: '100%',
@@ -838,8 +1077,10 @@ function CarDetails() {
                     transition: 'all 0.2s ease',
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = 'var(--bg-tertiary)';
-                    e.currentTarget.style.borderColor = 'var(--border-secondary)';
+                    e.currentTarget.style.backgroundColor =
+                      'var(--bg-tertiary)';
+                    e.currentTarget.style.borderColor =
+                      'var(--border-secondary)';
                     e.currentTarget.style.transform = 'translateY(-1px)';
                   }}
                   onMouseLeave={(e) => {
@@ -850,7 +1091,7 @@ function CarDetails() {
                 >
                   💬 Contact Seller
                 </button>
-                
+
                 <button
                   style={{
                     width: '100%',
@@ -865,8 +1106,10 @@ function CarDetails() {
                     transition: 'all 0.2s ease',
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = 'var(--bg-tertiary)';
-                    e.currentTarget.style.borderColor = 'var(--border-secondary)';
+                    e.currentTarget.style.backgroundColor =
+                      'var(--bg-tertiary)';
+                    e.currentTarget.style.borderColor =
+                      'var(--border-secondary)';
                     e.currentTarget.style.transform = 'translateY(-1px)';
                   }}
                   onMouseLeave={(e) => {
@@ -877,7 +1120,7 @@ function CarDetails() {
                 >
                   ❤️ Save to Favorites
                 </button>
-                
+
                 <button
                   style={{
                     width: '100%',
@@ -892,8 +1135,10 @@ function CarDetails() {
                     transition: 'all 0.2s ease',
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = 'var(--bg-tertiary)';
-                    e.currentTarget.style.borderColor = 'var(--border-secondary)';
+                    e.currentTarget.style.backgroundColor =
+                      'var(--bg-tertiary)';
+                    e.currentTarget.style.borderColor =
+                      'var(--border-secondary)';
                     e.currentTarget.style.transform = 'translateY(-1px)';
                   }}
                   onMouseLeave={(e) => {

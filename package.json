@@ -2,7 +2,13 @@
   "name": "@product-sandbox-monorepo/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "start:api": "nx serve api",
+    "build:api": "nx build api",
+    "start:frontend": "nx serve frontend",
+    "build:frontend": "nx build frontend",
+    "graph": "nx graph"
+  },
   "private": true,
   "devDependencies": {
     "@nx/express": "^21.2.2",

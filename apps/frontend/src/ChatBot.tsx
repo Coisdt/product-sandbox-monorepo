@@ -73,7 +73,7 @@ function ChatBot({ isOpen, onClose }: ChatBotProps) {
         }}
         onClick={handleClose}
       />
-      
+
       {/* Sidebar */}
       <div
         className={isClosing ? 'sidebar-exit' : 'sidebar-enter'}
@@ -159,7 +159,8 @@ function ChatBot({ isOpen, onClose }: ChatBotProps) {
                 lineHeight: '1.5',
               }}
             >
-              Ask me anything about cars, get recommendations, or chat about anything else!
+              Ask me anything about cars, get recommendations, or chat about
+              anything else!
             </p>
           </div>
           <button
@@ -232,14 +233,26 @@ function ChatBot({ isOpen, onClose }: ChatBotProps) {
                 style={{
                   maxWidth: role === 'user' ? '85%' : '90%',
                   padding: '1rem 1.25rem',
-                  borderRadius: role === 'user' ? '20px 20px 4px 20px' : '20px 20px 20px 4px',
-                  backgroundColor: role === 'user' ? 'var(--accent-primary)' : 'var(--bg-secondary)',
+                  borderRadius:
+                    role === 'user'
+                      ? '20px 20px 4px 20px'
+                      : '20px 20px 20px 4px',
+                  backgroundColor:
+                    role === 'user'
+                      ? 'var(--accent-primary)'
+                      : 'var(--bg-secondary)',
                   color: role === 'user' ? 'white' : 'var(--text-primary)',
                   fontSize: '0.95rem',
                   lineHeight: '1.5',
                   whiteSpace: 'pre-wrap',
-                  border: role === 'assistant' ? '1px solid var(--border-primary)' : 'none',
-                  boxShadow: role === 'user' ? '0 2px 8px rgba(34, 197, 94, 0.3)' : '0 2px 8px rgba(0, 0, 0, 0.1)',
+                  border:
+                    role === 'assistant'
+                      ? '1px solid var(--border-primary)'
+                      : 'none',
+                  boxShadow:
+                    role === 'user'
+                      ? '0 2px 8px rgba(34, 197, 94, 0.3)'
+                      : '0 2px 8px rgba(0, 0, 0, 0.1)',
                 }}
               >
                 {role === 'assistant' ? (
@@ -247,26 +260,41 @@ function ChatBot({ isOpen, onClose }: ChatBotProps) {
                     components={{
                       // Style the markdown components
                       p: ({ children }) => (
-                        <p style={{ margin: '0 0 0.75rem 0', color: 'var(--text-primary)' }}>
+                        <p
+                          style={{
+                            margin: '0 0 0.75rem 0',
+                            color: 'var(--text-primary)',
+                          }}
+                        >
                           {children}
                         </p>
                       ),
                       strong: ({ children }) => (
-                        <strong style={{ fontWeight: '700', color: 'var(--text-primary)' }}>
+                        <strong
+                          style={{
+                            fontWeight: '700',
+                            color: 'var(--text-primary)',
+                          }}
+                        >
                           {children}
                         </strong>
                       ),
                       em: ({ children }) => (
-                        <em style={{ fontStyle: 'italic', color: 'var(--text-secondary)' }}>
+                        <em
+                          style={{
+                            fontStyle: 'italic',
+                            color: 'var(--text-secondary)',
+                          }}
+                        >
                           {children}
                         </em>
                       ),
                       ul: ({ children }) => (
                         <ul
-                          style={{ 
-                            margin: '0.75rem 0', 
+                          style={{
+                            margin: '0.75rem 0',
                             paddingLeft: '1.5rem',
-                            color: 'var(--text-primary)'
+                            color: 'var(--text-primary)',
                           }}
                         >
                           {children}
@@ -274,17 +302,22 @@ function ChatBot({ isOpen, onClose }: ChatBotProps) {
                       ),
                       ol: ({ children }) => (
                         <ol
-                          style={{ 
-                            margin: '0.75rem 0', 
+                          style={{
+                            margin: '0.75rem 0',
                             paddingLeft: '1.5rem',
-                            color: 'var(--text-primary)'
+                            color: 'var(--text-primary)',
                           }}
                         >
                           {children}
                         </ol>
                       ),
                       li: ({ children }) => (
-                        <li style={{ marginBottom: '0.5rem', color: 'var(--text-primary)' }}>
+                        <li
+                          style={{
+                            marginBottom: '0.5rem',
+                            color: 'var(--text-primary)',
+                          }}
+                        >
                           {children}
                         </li>
                       ),
@@ -403,7 +436,13 @@ function ChatBot({ isOpen, onClose }: ChatBotProps) {
                   boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
                 }}
               >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                  }}
+                >
                   <div style={{ display: 'flex', gap: '0.25rem' }}>
                     <div
                       style={{
@@ -524,14 +563,17 @@ function ChatBot({ isOpen, onClose }: ChatBotProps) {
                     borderRadius: '12px',
                     fontSize: '0.95rem',
                     outline: 'none',
-                    backgroundColor: isLoading ? 'var(--bg-tertiary)' : 'var(--bg-card)',
+                    backgroundColor: isLoading
+                      ? 'var(--bg-tertiary)'
+                      : 'var(--bg-card)',
                     color: 'var(--text-primary)',
                     transition: 'all 0.2s ease',
                     fontFamily: 'inherit',
                   }}
                   onFocus={(e) => {
                     e.currentTarget.style.borderColor = 'var(--accent-primary)';
-                    e.currentTarget.style.boxShadow = '0 0 0 3px rgba(34, 197, 94, 0.1)';
+                    e.currentTarget.style.boxShadow =
+                      '0 0 0 3px rgba(34, 197, 94, 0.1)';
                   }}
                   onBlur={(e) => {
                     e.currentTarget.style.borderColor = 'var(--border-primary)';
@@ -560,8 +602,11 @@ function ChatBot({ isOpen, onClose }: ChatBotProps) {
                 style={{
                   padding: '1rem 1.5rem',
                   backgroundColor:
-                    !input.trim() || isLoading ? 'var(--border-primary)' : 'var(--accent-primary)',
-                  color: !input.trim() || isLoading ? 'var(--text-muted)' : 'white',
+                    !input.trim() || isLoading
+                      ? 'var(--border-primary)'
+                      : 'var(--accent-primary)',
+                  color:
+                    !input.trim() || isLoading ? 'var(--text-muted)' : 'white',
                   border: 'none',
                   borderRadius: '12px',
                   fontSize: '0.875rem',
@@ -570,23 +615,34 @@ function ChatBot({ isOpen, onClose }: ChatBotProps) {
                     !input.trim() || isLoading ? 'not-allowed' : 'pointer',
                   transition: 'all 0.2s ease',
                   minWidth: '80px',
-                  boxShadow: !input.trim() || isLoading ? 'none' : '0 2px 8px rgba(34, 197, 94, 0.3)',
+                  boxShadow:
+                    !input.trim() || isLoading
+                      ? 'none'
+                      : '0 2px 8px rgba(34, 197, 94, 0.3)',
                 }}
                 onMouseEnter={(e) => {
                   if (!(!input.trim() || isLoading)) {
-                    e.currentTarget.style.backgroundColor = 'var(--accent-secondary)';
+                    e.currentTarget.style.backgroundColor =
+                      'var(--accent-secondary)';
                     e.currentTarget.style.transform = 'translateY(-1px)';
                   }
                 }}
                 onMouseLeave={(e) => {
                   if (!(!input.trim() || isLoading)) {
-                    e.currentTarget.style.backgroundColor = 'var(--accent-primary)';
+                    e.currentTarget.style.backgroundColor =
+                      'var(--accent-primary)';
                     e.currentTarget.style.transform = 'translateY(0)';
                   }
                 }}
               >
                 {isLoading ? (
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.5rem',
+                    }}
+                  >
                     <div
                       style={{
                         width: '12px',
