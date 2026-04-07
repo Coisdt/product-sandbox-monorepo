@@ -1,0 +1,496 @@
+.page {
+  min-height: 100vh;
+  background-color: var(--bg-primary);
+  padding: 2rem;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Loading state */
+.loadingPage {
+  min-height: 100vh;
+  background-color: var(--bg-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loadingCard {
+  padding: 3rem;
+  text-align: center;
+  max-width: 400px;
+}
+
+.spinner {
+  width: 48px;
+  height: 48px;
+  border: 3px solid var(--border-primary);
+  border-top: 3px solid var(--accent-primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 1.5rem;
+}
+
+.loadingTitle {
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.loadingText {
+  color: var(--text-secondary);
+}
+
+/* Error state */
+.errorPage {
+  min-height: 100vh;
+  background-color: var(--bg-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.errorBox {
+  background-color: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 12px;
+  padding: 3rem;
+  text-align: center;
+  max-width: 500px;
+}
+
+.errorIcon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.errorTitle {
+  color: var(--danger);
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+.errorMessage {
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+  font-size: 1.125rem;
+}
+
+.errorBackBtn {
+  background-color: var(--accent-primary);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 1rem 2rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.errorBackBtn:hover {
+  background-color: var(--accent-secondary);
+  transform: translateY(-1px);
+}
+
+/* Nav row */
+.navRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.backBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: transparent;
+  color: var(--text-secondary);
+  border: none;
+  font-size: 0.875rem;
+  cursor: pointer;
+  padding: 0.5rem 0;
+  transition: color 0.2s ease;
+}
+
+.backBtn:hover {
+  color: var(--text-primary);
+}
+
+.themeToggleBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-primary);
+  border-radius: 10px;
+  font-size: 1.125rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.themeToggleBtn:hover {
+  background-color: var(--bg-tertiary);
+  border-color: var(--border-secondary);
+  transform: translateY(-1px);
+}
+
+/* Hero image */
+.heroCard {
+  padding: 0;
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+
+.heroImageWrapper {
+  height: 400px;
+  position: relative;
+  overflow: hidden;
+}
+
+.heroImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.heroImagePlaceholder {
+  height: 100%;
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.heroImageOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+}
+
+.heroImageEmoji {
+  color: white;
+  font-size: 6rem;
+  opacity: 0.9;
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.3));
+}
+
+.conditionBadge {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 24px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Title / price card */
+.titleCard {
+  margin-bottom: 2rem;
+}
+
+.titleRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.carTitle {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 0.5rem 0;
+  line-height: 1.2;
+}
+
+.titleSubRow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.titleSubText {
+  color: var(--text-secondary);
+  font-size: 1.125rem;
+}
+
+.engineTypeBadge {
+  padding: 0.5rem 1rem;
+  color: white;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.priceBlock {
+  text-align: right;
+}
+
+.priceValue {
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--accent-primary);
+  line-height: 1;
+  margin-bottom: 0.25rem;
+}
+
+.priceMileage {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+.description {
+  font-size: 1.125rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Specs card */
+.specsCard {
+  margin-bottom: 2rem;
+}
+
+.specsTitle {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+}
+
+.specsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.specGroupTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.specGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.specRow {
+  display: flex;
+  justify-content: space-between;
+}
+
+.specLabel {
+  color: var(--text-secondary);
+}
+
+.specValue {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.specValueCapitalize {
+  color: var(--text-primary);
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.specValueUpper {
+  color: var(--text-primary);
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.specValueMono {
+  color: var(--text-primary);
+  font-weight: 500;
+  font-family: monospace;
+}
+
+.available {
+  color: var(--success);
+  font-weight: 500;
+}
+
+.sold {
+  color: var(--danger);
+  font-weight: 500;
+}
+
+/* Features section */
+.featuresCard {
+  margin-bottom: 2rem;
+}
+
+.featuresTitle {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+}
+
+.featuresGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 0.75rem;
+}
+
+.featureItem {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  background-color: var(--bg-secondary);
+  border-radius: 8px;
+  border: 1px solid var(--border-primary);
+}
+
+.featureCheck {
+  color: var(--accent-primary);
+  font-size: 0.875rem;
+}
+
+.featureText {
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* Contact card */
+.stickyCard {
+  margin-bottom: 2rem;
+  position: sticky;
+  top: 2rem;
+}
+
+.contactTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+}
+
+.sellerBlock {
+  margin-bottom: 2rem;
+}
+
+.sellerInfo {
+  padding: 1.5rem;
+  background-color: var(--bg-secondary);
+  border-radius: 12px;
+  border: 1px solid var(--border-primary);
+  margin-bottom: 1.5rem;
+}
+
+.sellerName {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.sellerDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.sellerDetailRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.sellerDetailIcon {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+.sellerDetailText {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+.noContact {
+  padding: 1.5rem;
+  background-color: var(--bg-secondary);
+  border-radius: 12px;
+  border: 1px solid var(--border-primary);
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.noContactText {
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* Action buttons */
+.actionButtons {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.primaryBtn {
+  width: 100%;
+  background-color: var(--accent-primary);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(34, 197, 94, 0.3);
+}
+
+.primaryBtn:hover {
+  background-color: var(--accent-secondary);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
+}
+
+.secondaryBtn {
+  width: 100%;
+  background-color: transparent;
+  color: var(--text-primary);
+  border: 1px solid var(--border-primary);
+  border-radius: 12px;
+  padding: 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.secondaryBtn:hover {
+  background-color: var(--bg-tertiary);
+  border-color: var(--border-secondary);
+  transform: translateY(-1px);
+}
