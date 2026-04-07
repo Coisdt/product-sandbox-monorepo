@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import type { Car } from './car.interface';
 import ChatBot from './ChatBot';
-import { useTheme } from './ThemeContext';
+import { useTheme } from './useTheme';
 import styles from './CarDetails.module.css';
 
 function CarDetails() {
